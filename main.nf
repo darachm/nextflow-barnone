@@ -62,7 +62,8 @@ process barnone {
   output:
     set file("barnone_output_${MM}.counts"), 
       file("barnone_output_${MM}.mismatch"), 
-      file("barnone_output_${MM}.revised") into results
+      file("barnone_output_${MM}.revised"),
+      file("barnone_output_${MM}.stdout") into results
   shell: 
     '''
     module purge
@@ -70,14 +71,14 @@ process barnone {
     BarNone -f fastq \
       --multiplexfile !{sample_index} \
       --multiplexstart 1 --multiplexlength 5 \
-      --tagstart 18 --taglength 3 --start 9 \
+      --tagstart 18 --taglength 3 --start 21 \
       --mismatches !{MM} \
       --mismatchfile barnone_output_!{MM}.mismatch \
       --revisedcatalog barnone_output_!{MM}.revised \
       -p 500000 \
       !{fastq} \
       barnone_output_!{MM}.counts \
-      !{strain_index} 
+      !{strain_index} > barnone_output_!{MM}.stdout
     '''
 }
 
